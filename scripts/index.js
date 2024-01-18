@@ -42,7 +42,7 @@ function deleteCard(evt) {
 
 function addCard(element){ 
   contentList.append(createCard(element, deleteCard));
-}
+};
 
 initialCards.forEach(addCard);
 

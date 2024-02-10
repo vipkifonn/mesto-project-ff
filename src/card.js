@@ -1,12 +1,7 @@
-"use strict";
-// @todo: Темплейт карточки
-// @todo: DOM узлы
-const content = document.querySelector('.places');
-const contentList = content.querySelector('.places__list');
 
 // @todo: Функция создания карточки
 
-function createCard(item, deleteCard) {
+function createCard(item, deleteCard, openCardImagePopup, likeCard) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.cloneNode(true);
   
@@ -18,17 +13,14 @@ function createCard(item, deleteCard) {
   cardTitle.textContent = item.name;
 
   const likeButton = cardElement.querySelector('.card__like-button')
-  likeButton.addEventListener('click', function(evt){
-    if(evt.target.classList.contains('card__like-button_is-active') === false) {
-     evt.target.classList.add('card__like-button_is-active'); 
-    } else {
-      evt.target.classList.remove('card__like-button_is-active'); 
-    };
-     
-  });
+  likeButton.addEventListener('click', likeCard);
 
   const deleteButton = cardElement.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', deleteCard);
+
+  const openPopupImage = () => openCardImagePopup(item);
+
+	cardImage.addEventListener('click', openPopupImage);
   
   return cardElement;
 };
@@ -38,12 +30,14 @@ function deleteCard(evt) {
   const removeCard = evt.target.closest('.card');
   removeCard.remove();
 };
-// @todo: Вывести карточки на страницу
-
-function addCard(element){ 
-  contentList.append(createCard(element, deleteCard));
+// Функция лайка
+function likeCard (evt){
+    if(evt.target.classList.contains('card__like-button_is-active') === false) {
+     evt.target.classList.add('card__like-button_is-active'); 
+    } else {
+      evt.target.classList.remove('card__like-button_is-active'); 
+    };
 };
 
-initialCards.forEach(addCard);
-
+export { createCard, deleteCard, likeCard,};
 

@@ -32,11 +32,7 @@ function deleteCard(evt) {
 };
 // Функция лайка
 function likeCard (evt){
-    if(evt.target.classList.contains('card__like-button_is-active') === false) {
-     evt.target.classList.add('card__like-button_is-active'); 
-    } else {
-      evt.target.classList.remove('card__like-button_is-active'); 
-    };
+  evt.target.classList.toggle('card__like-button_is-active');
 };
 
 export { createCard, deleteCard, likeCard,};

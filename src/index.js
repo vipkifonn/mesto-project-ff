@@ -9,9 +9,7 @@ import {content,contentList,pageContent,popupEdit,popupEditForm,
         profileInfo,profileEditButton,profileAddButton,profileTitle,
         profileJob,popups,popupCard,popupImage,popupImageText
       } from "./components/elements";
-
-nameInput.value = profileTitle.textContent;
-jobInput.value = profileJob.textContent;      
+      
 
 // @todo: Вывести карточки на страницу
 function addCard(element){ 
@@ -31,7 +29,7 @@ function anmationPopup(){
 anmationPopup();
 
 // функция для определения открытого попапа
-export function OpenPopup() {
+export function getOpenPopup() {
 	return popups.find(popup => popup.classList.contains('popup_is-opened'));
 };
 //Функция закрытия по крестику
@@ -46,7 +44,7 @@ function handleEditFormSubmit(evt) {
 	const job = jobInput.value;
 	profileTitle.textContent = name;
 	profileJob.textContent = job;
-	closePopup(OpenPopup());
+	closePopup(getOpenPopup());
 };
 //Функция добавления карточки
 function handleAddFormSubmit(evt) {
@@ -68,6 +66,8 @@ function openCardImagePopup({ name, link }) {
 };
 //слушатели открытия попапов добавления карточки и изменения профиля
 profileEditButton.addEventListener('click', function (evt) {
+	nameInput.value = profileTitle.textContent;
+	jobInput.value = profileJob.textContent;  
 	evt.stopPropagation();
 	openPopup(popupEdit);
 });

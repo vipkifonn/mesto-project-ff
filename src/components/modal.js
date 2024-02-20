@@ -1,7 +1,7 @@
 import {content,contentList,pageContent,popupEdit,popupEditForm,nameInput,jobInput,popupNew,
   popupNewForm,placeInput,placeLink,profileInfo,profileEditButton,profileAddButton
   ,profileTitle,profileJob,popups,popupCard,popupImage,popupImageText} from "./elements";
-import {OpenPopup} from '../index' 
+import {getOpenPopup} from '../index' 
 
 // функция для открытия попапа
 function openPopup(popup) {
@@ -16,7 +16,7 @@ function closePopup(popup) {
 };
 // функция для закрытия попапа по кнопке ESC
 function handleCloseEsc(evt) {
-  const target = OpenPopup();
+  const target = getOpenPopup();
 	if (evt.key === 'Escape') {
 		closePopup(target);
 	}

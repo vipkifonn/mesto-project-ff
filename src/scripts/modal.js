@@ -1,7 +1,4 @@
-import {content,contentList,pageContent,popupEdit,popupEditForm,nameInput,jobInput,popupNew,
-  popupNewForm,placeInput,placeLink,profileInfo,profileEditButton,profileAddButton
-  ,profileTitle,profileJob,popups,popupCard,popupImage,popupImageText} from "./elements";
-import {getOpenPopup} from '../index' 
+import {getOpenPopup} from './index' 
 
 // функция для открытия попапа
 function openPopup(popup) {
@@ -28,6 +25,5 @@ function handleOverlayClick(evt) {
 		closePopup(evt.target);
 	}
 };
-
 
 export { openPopup, closePopup, handleCloseEsc, handleOverlayClick};

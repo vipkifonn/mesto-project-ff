@@ -1,4 +1,3 @@
-import { ValidationSettings } from "./elements";
 //показывает ошибку валидации
 const showInputError = (formElement, inputElement, errorMessage, settings) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -79,4 +78,4 @@ const clearValidation = (formElement, settings) => {
 };
 
 
-export {ValidationSettings, enableValidation, clearValidation,}
+export {enableValidation, clearValidation,}

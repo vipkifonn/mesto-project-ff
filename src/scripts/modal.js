@@ -1,10 +1,9 @@
-import {getOpenPopup} from './index' 
+import {getOpenPopup} from './utils' 
 
 // функция для открытия попапа
 function openPopup(popup) {
 	popup.classList.add('popup_is-opened');
 	document.addEventListener('keydown', handleCloseEsc);
-	return popup;
 };
 // функция для закрытия попапа
 function closePopup(popup) {

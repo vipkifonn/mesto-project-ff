@@ -1,4 +1,4 @@
-import { config } from "./elements";
+import { config } from "./constants";
 //запросы серверу
 const checkData = (res) => {
   if (!res.ok) {

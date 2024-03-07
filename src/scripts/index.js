@@ -1,28 +1,24 @@
 //подключения js
 import '../pages/index.css';
+import { getOpenPopup } from './utils';
 import { createCard, deleteCard} from './card'; 
 import { openPopup, closePopup, handleOverlayClick} from './modal';
 import {contentList,popupEdit,popupEditForm,nameInput,jobInput,popupNew,
   popupNewForm,placeInput,placeLink,profileEditButton,profileAddButton
   ,profileTitle,profileJob,popups,popupCard,popupImage,popupImageText, popupChange, popupChangeForm,
-   avatarInput, profileImg, myId, ValidationSettings} from './elements';
+   avatarInput, profileImg, validationSettings} from './constants';
 import {enableValidation, clearValidation,} from './validation';
 import {userData, getCard , renameProfile, changeAvatar, addCard} from './api';
-
+let myId
 
 // Функция которая присваевает класс анимации для попапов
-function anmationPopup(){
+function animatePopup(){
   popups.forEach((popup) => {
     popup.classList.add('popup_is-animated')
   })
 };
 //Вызываю функцию присваивающую класс необходимый для анимации
-anmationPopup();
-
-// функция для определения открытого попапа
-export function getOpenPopup() {
-	return popups.find(popup => popup.classList.contains('popup_is-opened'));
-};
+animatePopup();
 
 //Функция открытия катрочки
 function openCardImagePopup(evt) {
@@ -51,7 +47,7 @@ function handleEditFormSubmit(evt) {
     profileTitle.textContent = name;
     profileJob.textContent = job;
   })
-  .finally(() => closePopup(getOpenPopup()));
+  .then(() => closePopup(getOpenPopup()));
 };
 
 //Функция добавления карточки
@@ -69,8 +65,8 @@ function handleAddFormSubmit(evt) {
     contentList.prepend(cardElements);
   })
   .then(() => popupNewForm.reset())
+  .then(() => closePopup(getOpenPopup()))
   .catch(err => {console.log(err)})
-  .finally(() => closePopup(getOpenPopup()))
   evt.submitter.textContent = "Cохранение...";
 };
 
@@ -81,35 +77,31 @@ function handleFormSubmitAvatar(evt) {
 
   changeAvatar(avatarValue)
   .then(result => profileImg.style.backgroundImage = `url(${result})`)
-  .catch(err => {console.log(err)})
-  .finally(() => closePopup(getOpenPopup()));
-
-  profileImg.style.backgroundImage = `url(${avatarValue})`;
+  .then(evt.submitter.textContent = "Cохранение...")
+  .then(() => closePopup(getOpenPopup()))
+  .then(() => {profileImg.style.backgroundImage = `url(${avatarValue})`})
+  .catch(err => {console.log(err)});
 };
 
-//слушатель открытия попапа добавления корточки
+//слушатель открытия попапа изменения профиля
 profileEditButton.addEventListener('click', function (evt) {
 	nameInput.value = profileTitle.textContent;
 	jobInput.value = profileJob.textContent;  
 	evt.stopPropagation();
-	enableValidation(ValidationSettings);
-	clearValidation(popupEdit, ValidationSettings);
 	openPopup(popupEdit);
 });
 
-//слушатель открытия попапа изменения профиля
+//слушатель открытия попапа добавления корточки
 profileAddButton.addEventListener('click', function (evt) {
 	evt.stopPropagation();
-	enableValidation(ValidationSettings);
-	clearValidation(popupNew, ValidationSettings);
+	clearValidation(popupNew, validationSettings);
   openPopup(popupNew);
 });
 
 //слушатель открытия попапа изменения аватара
 profileImg.addEventListener('click', function (evt) {
 	evt.stopPropagation();
-  enableValidation(ValidationSettings);
-	clearValidation(popupChange, ValidationSettings);
+	clearValidation(popupChange, validationSettings);
   openPopup(popupChange);
 });
 
@@ -126,20 +118,22 @@ popupEditForm.addEventListener('submit', handleEditFormSubmit);
 popupNewForm.addEventListener('submit', handleAddFormSubmit);
 popupChangeForm.addEventListener('submit', handleFormSubmitAvatar);
 
-
-
 Promise.all([userData(), getCard()])
-.then(([userInfo, cards]) => cards.forEach(card => {
+.then(([userInfo, cards]) => {
+  myId = userInfo._id
+  cards.forEach(card => {
+    profileTitle.textContent = userInfo.name;
+    profileJob.textContent = userInfo.about;
+    profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
 
-  profileTitle.textContent = userInfo.name;
-  profileJob.textContent = userInfo.about;
-  profileImg.style.backgroundImage = `url('${userInfo.avatar}')`;
+    const userId = card.owner._id;
+    const cardId = card._id;
 
-  let userId = card.owner._id;
-  let cardId = card._id;
-
-  contentList.append(createCard(card, userId, cardId, myId, deleteCard, openCardImagePopup))
+    contentList.append(createCard(card, userId, cardId, myId, deleteCard, openCardImagePopup))
 })
-)
+})
 .catch(err => {console.log(err)})
 .finally(() => console.log('Выполнено успешно'));
+
+//вызов валидации форм
+enableValidation(validationSettings);

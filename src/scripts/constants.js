@@ -28,10 +28,9 @@ const profileImg = profileInfo.querySelector('.profile__image');
 const profileTitle = profileInfo.querySelector('.profile__title');
 const profileJob = profileInfo.querySelector('.profile__description');
 const popups = Array.from(document.querySelectorAll('.popup'));
+const cardTemplate = document.getElementById('card-template').content;
 
-const myId = '489f224b6b1bf9df750a9367';
-
-const ValidationSettings = {
+const validationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
@@ -51,4 +50,4 @@ const config = {
 export {content,contentList,pageContent,popupEdit,popupEditForm,nameInput,jobInput,popupNew,
   popupNewForm,placeInput,placeLink,profileInfo,profileEditButton,profileAddButton
   ,profileTitle,profileJob,popups,popupCard,popupImage,popupImageText, popupChange, popupChangeForm,
-   avatarInput, profileImg, myId, ValidationSettings, config};
+   avatarInput, profileImg, validationSettings, config, cardTemplate};

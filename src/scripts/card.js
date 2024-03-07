@@ -2,7 +2,7 @@ import {deleteCardId, toggleLike} from './api';
 import { cardTemplate} from './constants';
 // @todo: Функция создания карточки
 
-const createCard = (card, userId, cardId, myId, deleteCallback, popupImage) => {
+const createCard = (card, userId, cardId, myId, deleteCallback, popupImage, likeCallback) => {
   
   const cardElement = cardTemplate.cloneNode(true);
   const deleteBtn = cardElement.querySelector('.card__delete-button');
@@ -12,20 +12,21 @@ const createCard = (card, userId, cardId, myId, deleteCallback, popupImage) => {
   const likeCount = cardElement.querySelector('.card__count');
   
   const renderLikes = (card) => {
-    likeCount.textContent = card.likes.length
-      if (card.likes.some(user => user._id === myId)) {
-        likeBtn.classList.add('card__like-button_is-active')
-      }
-      else likeBtn.classList.remove('card__like-button_is-active')
-  };
+    likeCount.textContent = card.likes.length;
+  }
   renderLikes(card);
-
-  likeBtn.addEventListener('click', function likeCard () {
-    toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active'))
+  if (card.likes.some(user => user._id === myId)) {
+    likeBtn.classList.add('card__like-button_is-active')
+  }
+  else likeBtn.classList.remove('card__like-button_is-active')
+ 
+  likeBtn.addEventListener('click', (evt) =>{
+    toggleLike(cardId, evt.target.classList.contains('card__like-button_is-active'))
     .then((data) => {renderLikes(data)})
+    .then(() => likeCallback(evt))
     .catch(console.error)
     .finally(console.log('Выполнено успешно'))
-  });
+  })
 
   if (userId === myId) {
     deleteBtn.classList.add('card__delete-button-visible');
@@ -51,5 +52,9 @@ function deleteCard(evt) {
   const removeCard = evt.target.closest('.card');
   removeCard.remove();
 };
+//функция лайка
+function likeCard(evt) {
+  evt.target.classList.toggle('card__like-button_is-active');
+}
 
-export { createCard, deleteCard,};
+export { createCard, deleteCard, likeCard};

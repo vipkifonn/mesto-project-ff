@@ -1,7 +1,7 @@
 //подключения js
 import '../pages/index.css';
 import { getOpenPopup } from './utils';
-import { createCard, deleteCard} from './card'; 
+import { createCard, deleteCard, likeCard} from './card'; 
 import { openPopup, closePopup, handleOverlayClick} from './modal';
 import {contentList,popupEdit,popupEditForm,nameInput,jobInput,popupNew,
   popupNewForm,placeInput,placeLink,profileEditButton,profileAddButton
@@ -60,7 +60,7 @@ function handleAddFormSubmit(evt) {
  
   addCard(item.name, item.link)
   .then((res) => {
-    const cardElements = createCard( res, myId, res._id, myId, deleteCard, openCardImagePopup);
+    const cardElements = createCard( res, myId, res._id, myId, deleteCard, openCardImagePopup, likeCard);
 
     contentList.prepend(cardElements);
   })
@@ -129,7 +129,7 @@ Promise.all([userData(), getCard()])
     const userId = card.owner._id;
     const cardId = card._id;
 
-    contentList.append(createCard(card, userId, cardId, myId, deleteCard, openCardImagePopup))
+    contentList.append(createCard(card, userId, cardId, myId, deleteCard, openCardImagePopup, likeCard))
 })
 })
 .catch(err => {console.log(err)})

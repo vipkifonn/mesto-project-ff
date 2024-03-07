@@ -20,7 +20,7 @@ const createCard = (card, userId, cardId, myId, deleteCallback, popupImage) => {
   };
   renderLikes(card);
 
-  likeBtn.addEventListener('click', function cardLike() {
+  likeBtn.addEventListener('click', function likeCard () {
     toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active'))
     .then((data) => {renderLikes(data)})
     .catch(console.error)

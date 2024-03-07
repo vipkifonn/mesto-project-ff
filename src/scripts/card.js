@@ -1,16 +1,16 @@
 import {deleteCardId, toggleLike} from './api';
-import { cardTemplate } from './constants';
+import { cardTemplate} from './constants';
 // @todo: Функция создания карточки
 
 const createCard = (card, userId, cardId, myId, deleteCallback, popupImage) => {
-
+  
   const cardElement = cardTemplate.cloneNode(true);
   const deleteBtn = cardElement.querySelector('.card__delete-button');
-  const likeBtn = cardElement.querySelector('.card__like-button');
-  const likeCount = cardElement.querySelector('.card__count');
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
-
+  const likeBtn = cardElement.querySelector('.card__like-button');
+  const likeCount = cardElement.querySelector('.card__count');
+  
   const renderLikes = (card) => {
     likeCount.textContent = card.likes.length
       if (card.likes.some(user => user._id === myId)) {
@@ -20,7 +20,12 @@ const createCard = (card, userId, cardId, myId, deleteCallback, popupImage) => {
   };
   renderLikes(card);
 
-  likeBtn.addEventListener('click',likeCard);
+  likeBtn.addEventListener('click', function cardLike() {
+    toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active'))
+    .then((data) => {renderLikes(data)})
+    .catch(console.error)
+    .finally(console.log('Выполнено успешно'))
+  });
 
   if (userId === myId) {
     deleteBtn.classList.add('card__delete-button-visible');
@@ -46,13 +51,5 @@ function deleteCard(evt) {
   const removeCard = evt.target.closest('.card');
   removeCard.remove();
 };
-// функция лайка 
-function likeCard (){
-  toggleLike(cardId, likeBtn.classList.contains('card__like-button_is-active'))
-  .then((data) => {renderLikes(data);})
-  .catch(err => {console.log(err)})
-  .finally(() => console.log('Выполнено успешно'))
-}
-
 
 export { createCard, deleteCard,};

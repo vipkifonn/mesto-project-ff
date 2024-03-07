@@ -30,6 +30,7 @@ const profileJob = profileInfo.querySelector('.profile__description');
 const popups = Array.from(document.querySelectorAll('.popup'));
 const cardTemplate = document.getElementById('card-template').content;
 
+
 const validationSettings = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',

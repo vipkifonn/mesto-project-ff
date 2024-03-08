@@ -2,82 +2,81 @@ import { config } from "./constants";
 //запросы серверу
 const checkData = (res) => {
   if (!res.ok) {
-    return Promise.reject(`Ошибка: ${res.status}`)
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
   return res.json();
-}
-
- const userData = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'GET',
-    headers: config.headers
-  })
-  .then(result => checkData(result));
 };
 
+const userData = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: "GET",
+    headers: config.headers,
+  }).then((result) => checkData(result));
+};
 
- const getCard = () =>  {
+const getCard = () => {
   return fetch(`${config.baseUrl}/cards`, {
-    method: 'GET',
-    headers: config.headers
-  })
-  .then(result => checkData(result));
+    method: "GET",
+    headers: config.headers,
+  }).then((result) => checkData(result));
 };
 
- const renameProfile = (nameUser, job) => {
+const renameProfile = (nameUser, job) => {
   return fetch(`${config.baseUrl}/users/me`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
       name: nameUser,
-      about: job
-    })
-  })
-  .then(result => checkData(result))
+      about: job,
+    }),
+  }).then((result) => checkData(result));
 };
 
- const changeAvatar = (avatarUrl) => {
+const changeAvatar = (avatarUrl) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       authorization: `${config.headers.authorization}`,
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      avatar: avatarUrl
-    })
-  })
-  .then(result => checkData(result));
-}
+      avatar: avatarUrl,
+    }),
+  }).then((result) => checkData(result));
+};
 
-
- const addCard = (place, linkUrl) => {
+const addCard = (place, linkUrl) => {
   return fetch(`${config.baseUrl}/cards`, {
-    method: 'POST',
+    method: "POST",
     headers: config.headers,
     body: JSON.stringify({
       name: place,
-      link: linkUrl
-    })
-  })
-  .then(result => checkData(result));
-}
-
- const deleteCardId = (userId) => {
-  return fetch(`${config.baseUrl}/cards/${userId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-  .then(result => checkData(result));
+      link: linkUrl,
+    }),
+  }).then((result) => checkData(result));
 };
 
+const deleteCardId = (userId) => {
+  return fetch(`${config.baseUrl}/cards/${userId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then((result) => checkData(result));
+};
 
 const toggleLike = (element, isLiked) => {
   return fetch(`${config.baseUrl}/cards/likes/${element}`, {
-    method: isLiked ? 'DELETE': 'PUT',
-    headers: config.headers
-  })
-  .then(result => checkData(result));
+    method: isLiked ? "DELETE" : "PUT",
+    headers: config.headers,
+  }).then((result) => checkData(result));
 };
 
-export {checkData,userData, getCard, renameProfile, changeAvatar, addCard, deleteCardId, toggleLike};
+export {
+  checkData,
+  userData,
+  getCard,
+  renameProfile,
+  changeAvatar,
+  addCard,
+  deleteCardId,
+  toggleLike,
+};
